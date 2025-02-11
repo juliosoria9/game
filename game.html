@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atrapa el Cuadrado</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        #game { position: relative; width: 300px; height: 300px; border: 2px solid black; margin: auto; }
+        #square { position: absolute; width: 50px; height: 50px; background: red; cursor: pointer; }
+        #result { font-size: 20px; margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Atrapa el Cuadrado</h1>
+    <p>Puntuación: <span id="score">0</span></p>
+    <p>Tiempo: <span id="time">30</span> segundos</p>
+    <div id="game">
+        <div id="square"></div>
+    </div>
+    <p id="result"></p>
+    <script>
+        let score = 0;
+        let timeLeft = 10;
+        const square = document.getElementById("square");
+        const game = document.getElementById("game");
+        const timeDisplay = document.getElementById("time");
+        const scoreDisplay = document.getElementById("score");
+        const resultDisplay = document.getElementById("result");
+
+        function moveSquare() {
+            let x = Math.random() * (game.clientWidth - 50);
+            let y = Math.random() * (game.clientHeight - 50);
+            square.style.left = x + "px";
+            square.style.top = y + "px";
+        }
+
+        function getMote(points) {
+            if (points < 5) return "¿Dormido? 💤";
+            if (points < 10) return "Por debajo de la media 😐";
+            if (points < 15) return "Medio, aceptable 👍";
+            if (points < 20) return "Por encima de la media 💪";
+            if (points < 25) return "Estratosférico 🚀";
+            return "¡Nivel Dios! 🏆🔥";
+        }
+
+        square.addEventListener("click", () => {
+            if (timeLeft > 0) {
+                score++;
+                scoreDisplay.textContent = score;
+                moveSquare();
+            }
+        });
+
+        const timer = setInterval(() => {
+            timeLeft--;
+            timeDisplay.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                square.style.display = "none";
+                resultDisplay.textContent = "Resultado: " + getMote(score);
+            }
+        }, 1000);
+
+        moveSquare();
+    </script>
+</body>
+</html>
